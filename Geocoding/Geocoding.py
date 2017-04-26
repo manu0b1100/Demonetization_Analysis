@@ -1,5 +1,6 @@
 import requests
 import json
+import os
 import pandas as pd
 from queue import Queue
 from threading import Thread
@@ -9,6 +10,8 @@ from time import time
 class Geocoding:
 
     def __init__(self,input_file,output_file):
+	
+	os.chdir('/home/manobhav/PycharmProjects/demonetisation analysis/Geocoding')
         self.frame = pd.read_excel(input_file)
         #self.frame.head() #Testing
         self.baseurl="https://maps.googleapis.com/maps/api/geocode/json?"
