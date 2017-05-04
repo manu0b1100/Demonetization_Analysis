@@ -11,11 +11,11 @@ class Geocoding:
 
     def __init__(self,input_file,output_file):
 	
-	os.chdir('/home/manobhav/PycharmProjects/demonetisation analysis/Geocoding')
-        self.frame = pd.read_excel(input_file)
+        os.chdir('/home/manobhav/PycharmProjects/demonetisation analysis/')
+        self.frame = pd.read_csv(input_file)
         #self.frame.head() #Testing
         self.baseurl="https://maps.googleapis.com/maps/api/geocode/json?"
-        self.key="YOUR_API_KEY"
+        self.key="AIzaSyBjS9_-orNS7CrEdNzJLLV-mrGsNsqVasQ"
         self.q=Queue()
         self.results=[]
         self.outputfile=output_file
@@ -23,7 +23,7 @@ class Geocoding:
 
 
     def getCityNames(self):
-        self.cities=self.frame.city[self.frame.city.isnull() == False].unique().tolist()
+        self.cities=self.frame.City[self.frame.City.isnull() == False].unique().tolist()
         for c in self.cities:
             self.q.put(c)
 
@@ -32,20 +32,20 @@ class Geocoding:
         while True:
             print('thread {} running'.format(i))
             resultdict={}
-            resultdict['city']=self.q.get()
-            payload={'address':resultdict['city'],'key':self.key}
+            resultdict['City']=self.q.get()
+            payload={'address':resultdict['City'],'key':self.key}
             jsonstring=requests.get(self.baseurl,payload).text
 
             jsondict=json.loads(jsonstring)
 
             if jsondict['status']=='OK':
-                resultdict['lat']=jsondict['results'][0]['geometry']['location']['lat']
-                resultdict['long']=jsondict['results'][0]['geometry']['location']['lng']
+                resultdict['Lat']=jsondict['results'][0]['geometry']['location']['lat']
+                resultdict['Long']=jsondict['results'][0]['geometry']['location']['lng']
                 for l in jsondict['results'][0]['address_components']:
                     if l['types'][0] == "administrative_area_level_1":
-                        resultdict['state']=l['long_name']
+                        resultdict['State']=l['long_name']
             self.results.append(resultdict)
-            print(self.results)
+            print(resultdict)
             self.q.task_done()
 
 
@@ -64,9 +64,9 @@ class Geocoding:
     def update_Data(self):
 
         res=pd.DataFrame(self.results)
-        updatedframe=pd.merge(self.frame,res,on='city',how='left',sort=False)
-        updatedframe.to_excel(self.outputfile)
+        updatedframe=pd.merge(self.frame,res,on='City',how='left',sort=False)
+        updatedframe.to_csv(self.outputfile,index=False)
 
 
 
-geo=Geocoding('articlesexcel.xlsx','updated_articlesexcel.xlsx')
+geo=Geocoding('Data/demonet.csv','Data/demonetlatlong.csv')
