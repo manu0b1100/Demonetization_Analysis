@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-from Model import Demon
+from Charts import Demon
 
 def barplot():
     demon.getBarSentiment(var.get())
