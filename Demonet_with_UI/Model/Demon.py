@@ -36,7 +36,7 @@ class Demon:
                     llcrnrlon=68.03215, urcrnrlon=97.40238, resolution='c', epsg=4269)
         x, y = m(tuple(mydata.Long[(mydata.Long.isnull() == False)]), tuple(mydata.Lat[(mydata.Lat.isnull() == False)]))
         plt.figure(figsize=(40, 20))
-        m.arcgisimage(service="NatGeo_World_Map", xpixels=3000,verbose=True)
+        m.arcgisimage(service="NatGeo_World_Map", xpixels=2000,verbose=True)
         m.plot(x, y, 'ro', markersize=15, alpha=0.3,color=col)
         plt.show()
 

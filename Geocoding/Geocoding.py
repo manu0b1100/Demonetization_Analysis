@@ -15,7 +15,7 @@ class Geocoding:
         self.frame = pd.read_csv(input_file)
         #self.frame.head() #Testing
         self.baseurl="https://maps.googleapis.com/maps/api/geocode/json?"
-        self.key="AIzaSyBjS9_-orNS7CrEdNzJLLV-mrGsNsqVasQ"
+        self.key="YOUR_API_KEY"
         self.q=Queue()
         self.results=[]
         self.outputfile=output_file
